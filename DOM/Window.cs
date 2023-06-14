@@ -27,7 +27,7 @@ namespace WebBrowser.DOM
             set
             {
                 _location = value;
-                _ = Navigate(); // Do not wait
+                _ = Navigate();
             }
         }
 
