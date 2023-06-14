@@ -17,7 +17,7 @@ namespace WebBrowser.DOM
 
         public void LoadHTML(string HTML)
         {
-
+            /* Magic */
         }
     }
 }
