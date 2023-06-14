@@ -22,7 +22,7 @@ namespace WebBrowser
     public partial class MainWindow : Window
     {
         public readonly static InstanceManager InstanceManager;
-        private Inspector? _inspectorWindow;
+        public Pointer<Inspector> InspectorPtr { get; private set; } = new();
 
         private readonly DOM.Window _browserWindow;
 
@@ -34,36 +34,42 @@ namespace WebBrowser
         public MainWindow(string url)
         {
             InstanceManager.RegisterInstance(this);
-            _browserWindow = new()
-            {
-                Url = url
-            };
+            _browserWindow = new(InspectorPtr);
 
             InitializeComponent();
+            _browserWindow.Location = url;
         }
 
-        public MainWindow() : this("https://duckduckgo.com") { }
+        public MainWindow() : this("http://duckduckgo.com/") { }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             switch (e.Key)
             {
+                case Key.F5:
+                {
+                    _browserWindow.Location = _browserWindow.Location;
+                    break;
+                }
+
                 case Key.F12:
                 {
-                    if (_inspectorWindow is null)
+                    if (InspectorPtr.Null)
                     {
-                        _inspectorWindow = new(_browserWindow);
-                        _inspectorWindow.Closing += (sender, e) => _inspectorWindow = null;
+                        InspectorPtr.Object = new(_browserWindow);
+                        InspectorPtr.Object.Closing += (sender, e) => InspectorPtr.Object = null;
                     }
 
                     try
                     {
-                        _inspectorWindow?.Show();
-                        _inspectorWindow?.Focus();
+                        Inspector inspectorWindow = InspectorPtr.Object!;
+
+                        inspectorWindow.Show();
+                        inspectorWindow.Focus();
                     }
                     catch (Exception ex)
                     {
-                        _inspectorWindow = null;
+                        InspectorPtr.Object = null;
 
                         MessageBox.Show(
                             $"Could not display inspector window: {ex}",

@@ -47,5 +47,31 @@ namespace WebBrowser
         public void Log(object obj) => Message(ConsoleWarningLevel.Log, obj);
         public void Warn(object obj) => Message(ConsoleWarningLevel.Warn, obj);
         public void Error(object obj) => Message(ConsoleWarningLevel.Error, obj);
+
+        public void ObserveRequest(Request request)
+        {
+            TextBlock? tb = null;
+            NetworkHistory.Dispatcher.Invoke(() =>
+            {
+                tb = new() { Text = request.ToString() };
+                NetworkHistory.Children.Add(tb);
+            });
+
+            request.StatusChanged += (sender, e) =>
+            {
+                NetworkHistory.Dispatcher.Invoke(() =>
+                {
+                    if (tb is not null)
+                    {
+                        tb.Text = request.ToString();
+                    }
+                });
+            };
+        }
+
+        private void Request_StatusChanged(object? sender, RequestStatus e)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
