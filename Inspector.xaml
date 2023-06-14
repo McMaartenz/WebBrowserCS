@@ -7,6 +7,22 @@
         mc:Ignorable="d"
         Title="Inspector" Height="450" Width="800">
     <Grid>
-        
+        <TabControl>
+            <TabItem Header="Console">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="48"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <StackPanel x:Name="ConsoleHistory" Grid.Row="0" />
+                    <TextBox Grid.Row="1" TextWrapping="Wrap" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="Network">
+                <Grid Background="#FFE5E5E5">
+                    <StackPanel x:Name="NetworkHistory" Grid.ColumnSpan="2"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>
