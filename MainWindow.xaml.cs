@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -54,9 +55,23 @@ namespace WebBrowser
                         _inspectorWindow = new(_browserWindow);
                         _inspectorWindow.Closing += (sender, e) => _inspectorWindow = null;
                     }
+
+                    try
+                    {
+                        _inspectorWindow?.Show();
+                        _inspectorWindow?.Focus();
+                    }
+                    catch (Exception ex)
+                    {
+                        _inspectorWindow = null;
+
+                        MessageBox.Show(
+                            $"Could not display inspector window: {ex}",
+                            "Inspector Window",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Error);
+                    }
                     
-                    _inspectorWindow?.Show();
-                    _inspectorWindow?.Focus();
                     break;
                 }
 
