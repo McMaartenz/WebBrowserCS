@@ -11,9 +11,17 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace WebBrowser
 {
+    enum ConsoleWarningLevel
+    {
+        Log,
+        Warn,
+        Error
+    }
+
     /// <summary>
     /// Interaction logic for Inspector.xaml
     /// </summary>
@@ -26,5 +34,18 @@ namespace WebBrowser
             _browserWindow = browserWindow;
             InitializeComponent();
         }
+
+        private void Message(ConsoleWarningLevel level, object obj)
+        {
+            ConsoleHistory.Dispatcher.BeginInvoke(() =>
+            {
+                TextBlock tb = new() { Text = $"{level}: {obj}"};
+                ConsoleHistory.Children.Add(tb);
+            });
+        }
+
+        public void Log(object obj) => Message(ConsoleWarningLevel.Log, obj);
+        public void Warn(object obj) => Message(ConsoleWarningLevel.Warn, obj);
+        public void Error(object obj) => Message(ConsoleWarningLevel.Error, obj);
     }
 }
