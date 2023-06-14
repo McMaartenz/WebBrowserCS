@@ -14,13 +14,17 @@
                         <RowDefinition Height="*"></RowDefinition>
                         <RowDefinition Height="48"></RowDefinition>
                     </Grid.RowDefinitions>
-                    <StackPanel x:Name="ConsoleHistory" Grid.Row="0" />
+                    <ScrollViewer Grid.Row="0" >
+                        <StackPanel x:Name="ConsoleHistory" />
+                    </ScrollViewer>
                     <TextBox Grid.Row="1" TextWrapping="Wrap" />
                 </Grid>
             </TabItem>
             <TabItem Header="Network">
                 <Grid Background="#FFE5E5E5">
-                    <StackPanel x:Name="NetworkHistory" Grid.ColumnSpan="2"/>
+                    <ScrollViewer>
+                        <StackPanel x:Name="NetworkHistory" />
+                    </ScrollViewer>
                 </Grid>
             </TabItem>
         </TabControl>

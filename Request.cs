@@ -60,7 +60,7 @@ namespace WebBrowser
 
             Response = Type switch
             {
-                RequestType.GET => await client.GetAsync(Url), //await client.GetAsync(Url),
+                RequestType.GET => await client.GetAsync(Url),
                 _ => throw new NotImplementedException()
             };
             
