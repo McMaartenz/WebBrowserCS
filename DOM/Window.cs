@@ -36,7 +36,15 @@ namespace WebBrowser.DOM
 
         private async Task Navigate()
         {
-            _ = await GET(Location);
+            HttpResponseMessage response = await GET(Location);
+            if (!response.IsSuccessStatusCode)
+            {
+                return;
+            }
+
+            string body = await response.Content.ReadAsStringAsync();
+            Document = new(this);
+            Document.LoadHTML(body);
         }
 
         private async Task<HttpResponseMessage> GET(string url)

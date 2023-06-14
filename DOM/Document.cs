@@ -14,5 +14,10 @@ namespace WebBrowser.DOM
         {
             _parentWindow = parentWindow;
         }
+
+        public void LoadHTML(string HTML)
+        {
+
+        }
     }
 }
