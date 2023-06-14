@@ -27,6 +27,8 @@ namespace WebBrowser
     /// </summary>
     public partial class Inspector : Window
     {
+        public bool ShouldClose { get; set; }
+
         private DOM.Window _browserWindow;
 
         public Inspector(DOM.Window browserWindow)
@@ -69,9 +71,10 @@ namespace WebBrowser
             };
         }
 
-        private void Request_StatusChanged(object? sender, RequestStatus e)
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            throw new NotImplementedException();
+            e.Cancel = !ShouldClose;
+            Hide();
         }
     }
 }

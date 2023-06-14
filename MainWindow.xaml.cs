@@ -34,13 +34,15 @@ namespace WebBrowser
         public MainWindow(string url)
         {
             InstanceManager.RegisterInstance(this);
+
             _browserWindow = new(InspectorPtr);
+            InspectorPtr.Object = new(_browserWindow);
 
             InitializeComponent();
             _browserWindow.Location = url;
         }
 
-        public MainWindow() : this("http://duckduckgo.com/") { }
+        public MainWindow() : this("http://example.com/") { }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
@@ -85,6 +87,16 @@ namespace WebBrowser
                 {
                     break;
                 }
+            }
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (InspectorPtr.Object is not null)
+            {
+                Inspector inspector = InspectorPtr.Object;
+                inspector.ShouldClose = true;
+                inspector.Close();
             }
         }
     }
