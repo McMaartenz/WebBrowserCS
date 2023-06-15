@@ -10,14 +10,17 @@ namespace WebBrowser.DOM.Nodes
     {
         private Window _parentWindow;
 
-        public Document(Window parentWindow) : base(null, "DOCUMENT")
+        public Document(Window parentWindow) : base(null, "#document")
         {
             _parentWindow = parentWindow;
+            BaseURI = parentWindow.Location;
         }
 
         public Node CreateElement(Node? parentNode, string name)
         {
-            // more logic
+            // Activator.CreateInstance()
+            // Dictionary of string -> class of type Node
+
             return new(parentNode, name);
         }
 

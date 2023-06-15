@@ -32,7 +32,7 @@ namespace WebBrowser
     {
         public bool ShouldClose { get; set; }
 
-        private DOMWindow _browserWindow;
+        private readonly DOMWindow _browserWindow;
 
         public Inspector(DOMWindow browserWindow)
         {
@@ -71,6 +71,11 @@ namespace WebBrowser
                         tb.Text = request.ToString();
                     }
                 });
+            };
+
+            request.Resolved += (sender, e) =>
+            {
+                Log(_browserWindow.Document);
             };
         }
 

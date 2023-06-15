@@ -63,10 +63,11 @@ namespace WebBrowser
                     {
                         if (buildingTag)
                         {
-                            Document.CreateElement(currentNode, sb.ToString());
+                            currentNode = Document.CreateElement(currentNode, sb.ToString());
                             sb.Clear();
 
                             buildingTag = false;
+                            break;
                         }
                         break;
                     }

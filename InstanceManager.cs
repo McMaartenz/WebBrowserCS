@@ -10,8 +10,8 @@ namespace WebBrowser
 {
     public class InstanceManager
     {
-        private List<Window> _activeInstances = new();
-        private List<Type> _instanceTypes = new();
+        private readonly List<Window> _activeInstances = new();
+        private readonly List<Type> _instanceTypes = new();
 
         public void RegisterInstance(Window instance)
         {
