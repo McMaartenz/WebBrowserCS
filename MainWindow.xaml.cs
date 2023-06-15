@@ -14,6 +14,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using DOMWindow = WebBrowser.DOM.Window;
+
 namespace WebBrowser
 {
     /// <summary>
@@ -24,7 +26,7 @@ namespace WebBrowser
         public readonly static InstanceManager InstanceManager;
         public Pointer<Inspector> InspectorPtr { get; private set; } = new();
 
-        private readonly DOM.Window _browserWindow;
+        private readonly DOMWindow _browserWindow;
 
         static MainWindow()
         {
@@ -42,7 +44,7 @@ namespace WebBrowser
             _browserWindow.Location = url;
         }
 
-        public MainWindow() : this("http://example.com/") { }
+        public MainWindow() : this("http://localhost:5500/webbrowser/") { }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {

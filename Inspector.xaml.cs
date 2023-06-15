@@ -12,6 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using WebBrowser.DOM;
+using DOMWindow = WebBrowser.DOM.Window;
+using Window = System.Windows.Window;
 
 namespace WebBrowser
 {
@@ -29,9 +32,9 @@ namespace WebBrowser
     {
         public bool ShouldClose { get; set; }
 
-        private DOM.Window _browserWindow;
+        private DOMWindow _browserWindow;
 
-        public Inspector(DOM.Window browserWindow)
+        public Inspector(DOMWindow browserWindow)
         {
             _browserWindow = browserWindow;
             InitializeComponent();
