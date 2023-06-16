@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace WebBrowser.DOM.Nodes.CharacterDatas
 {
+    [HTML(NodeName = "!--")]
     public class Comment : CharacterData
     {
         public Comment(Node? parentNode, string nodeName = "!--") : base(parentNode, nodeName) { }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace WebBrowser.DOM.Nodes
 {
+    [HTML]
     public class CharacterData : Node
     {
         protected CharacterData(Node? parentNode, string nodeName) : base(parentNode, nodeName) { }

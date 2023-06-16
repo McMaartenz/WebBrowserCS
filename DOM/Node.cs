@@ -22,6 +22,7 @@ namespace WebBrowser.DOM
         DOCUMENT_FRAGMENT_NODE = 11,
     }
 
+    [HTML]
     public class Node : EventTarget
     {
         public string NodeName { get; init; }

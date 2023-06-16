@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows;
 using WebBrowser.DOM;
 using WebBrowser.DOM.Nodes;
 using WebBrowser.DOM.Nodes.Elements;
@@ -14,16 +15,24 @@ namespace WebBrowser
     public class HTMLParser
     {
         public Document Document { get; init; }
+        private Node _currentNode;
+        private StringBuilder _sb = new();
+
+        /* Status */
+        private bool _buildingNode = false;
+        private bool _closingNode = false;
 
         public HTMLParser(Document document, string HTML)
         {
             Document = document;
+            _currentNode = document;
 
             Parse(HTML);
         }
 
         public enum Token
         {
+            Unknown,
             Whitespace,
             Character,
             HtmlTagStart,
@@ -31,18 +40,35 @@ namespace WebBrowser
             HtmlTagCloser,
         }
 
+        public bool BuildNode()
+        {
+            if (!_buildingNode)
+            {
+                return false;
+            }
+
+            if (_closingNode)
+            {
+                _currentNode = _currentNode.ParentNode ?? _currentNode;
+                return true;
+            }
+
+            _currentNode = Document.CreateElement(_currentNode, _sb.ToString());
+            _sb.Clear();
+
+            _buildingNode = false;
+            return true;
+        }
+
         public void Parse(string HTML)
         {
-            const string charsWhitespace = " \t\n";
+            const string charsWhitespace = " \t\r\n";
             const string charsAlphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!?[]-";
+            const string charsASCII = charsAlphabet + charsWhitespace + "()@#$%^&*()_+={}\\|'\";:,./0123456789";
 
             int pos = 0;
             char c;
-            StringBuilder sb = new();
 
-            Node currentNode = Document;
-
-            bool buildingTag = false;
             while (pos < HTML.Length)
             {
                 c = HTML[pos];
@@ -54,34 +80,59 @@ namespace WebBrowser
                     '<' => Token.HtmlTagStart,
                     '>' => Token.HtmlTagEnd,
                     '/' => Token.HtmlTagCloser,
-                    _ => throw new Exception("Unknown")
+                    char x when charsASCII.Contains(x) => Token.Character,
+                    _ => Token.Unknown
                 };
 
                 switch (token)
                 {
+                    case Token.Unknown:
+                    {
+                        MessageBox.Show($"Unknown token: {c}", "Invalid HTML", MessageBoxButton.OK, MessageBoxImage.Error);
+                        break;
+                    }
+
                     case Token.Whitespace:
                     {
-                        if (buildingTag)
+                        if (BuildNode())
                         {
-                            currentNode = Document.CreateElement(currentNode, sb.ToString());
-                            sb.Clear();
-
-                            buildingTag = false;
                             break;
                         }
+
+                        break;
+                    }
+
+                    case Token.HtmlTagEnd:
+                    {
+                        if (BuildNode())
+                        {
+                            break;
+                        }
+
                         break;
                     }
 
                     case Token.Character:
                     {
-                        sb.Append(c);
+                        _sb.Append(c);
                         break;
                     }
 
                     case Token.HtmlTagStart:
                     {
-                        buildingTag = true;
-                        sb.Clear();
+                        _buildingNode = true;
+                        _sb.Clear();
+                        break;
+                    }
+
+                    case Token.HtmlTagCloser:
+                    {
+                        if (_buildingNode)
+                        {
+                            _closingNode = true;
+                            break;
+                        }
+
                         break;
                     }
 
