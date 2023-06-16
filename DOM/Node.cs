@@ -106,7 +106,17 @@ namespace WebBrowser.DOM
         public override string ToString()
         {
             string childNodesText = string.Join("", ChildNodes.Select(node => node.ToString()));
-            return $"<{NodeName} ATTR>{childNodesText}</{NodeName}>";
+            return $"<{NodeName}>{childNodesText}</{NodeName}>";
+        }
+
+        public string Stringifier(int indent = 0)
+        {
+            string tabs = new(' ', indent);
+            string[] childStrings = ChildNodes.Select(node => node.Stringifier(indent + 1)).ToArray();
+
+            string innerData = string.Join('\n', childStrings);
+
+            return $"{tabs}<{NodeName}>\n{innerData}{tabs}</{NodeName}>";
         }
     }
 }

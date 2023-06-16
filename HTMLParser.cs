@@ -46,10 +46,16 @@ namespace WebBrowser
             {
                 return false;
             }
+            
+            if (_sb.ToString() == "--" || _sb.ToString() == "]]")
+            {
+                _closingNode = true;
+            }
 
             if (_closingNode)
             {
                 _currentNode = _currentNode.ParentNode ?? _currentNode;
+                _closingNode = false;
                 return true;
             }
 

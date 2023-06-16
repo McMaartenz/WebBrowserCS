@@ -75,7 +75,7 @@ namespace WebBrowser
 
             request.Resolved += (sender, e) =>
             {
-                Log(_browserWindow.Document);
+                Log(_browserWindow.Document.Stringifier());
             };
         }
 
