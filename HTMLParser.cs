@@ -46,8 +46,11 @@ namespace WebBrowser
             {
                 return false;
             }
-            
-            if (_sb.ToString() == "--" || _sb.ToString() == "]]")
+
+            string nodeName = _sb.ToString();
+            _sb.Clear();
+
+            if (nodeName == "--" || nodeName == "]]")
             {
                 _closingNode = true;
             }
@@ -59,8 +62,7 @@ namespace WebBrowser
                 return true;
             }
 
-            _currentNode = Document.CreateElement(_currentNode, _sb.ToString());
-            _sb.Clear();
+            _currentNode = Document.CreateElement(_currentNode, nodeName);
 
             _buildingNode = false;
             return true;
