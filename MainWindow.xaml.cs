@@ -44,7 +44,7 @@ namespace WebBrowser
             _browserWindow.Location = url;
         }
 
-        public MainWindow() : this("http://localhost:5500/webbrowser/") { }
+        public MainWindow() : this("http://localhost:7357/webbrowser/index.html") { }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
