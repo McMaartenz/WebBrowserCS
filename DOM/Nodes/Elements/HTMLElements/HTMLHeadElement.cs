@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WebBrowser.DOM.Nodes.Elements.HTMLElements
 {
-    [HTML(NodeName = "head", PureContainer = true)]
+    [HTML(NodeName = "head")]
     public class HTMLHeadElement : HTMLElement
     {
         public HTMLHeadElement(Node? parentNode, string nodeName) : base(parentNode, nodeName) { }

@@ -15,10 +15,26 @@ namespace WebBrowser.DOM
         public double Width { get; set; }
         public double Height { get; set; }
 
-        public double Top { get; set; }
-        public double Right { get; set; }
-        public double Bottom { get; set; }
-        public double Left { get; set; }
+        public double Top => Y + Math.Min(0, Height);
+        public double Right => X + Math.Max(0, Width);
+        public double Bottom => Y + Math.Max(0, Height);
+        public double Left => X + Math.Min(0, Width);
+
+        public static DOMRect Clone(DOMRect rect)
+        {
+            return new()
+            {
+                X = rect.X,
+                Y = rect.Y,
+                Width = rect.Width,
+                Height = rect.Height
+            };
+        }
+
+        public static DOMRect FromArea(Area area)
+        {
+            return FromRect(area.Left, area.Top, area.Left + area.Right, area.Top + area.Bottom);
+        }
 
         public static DOMRect FromRect(RectangleF rectangle)
         {
@@ -28,10 +44,6 @@ namespace WebBrowser.DOM
                 Y = rectangle.Y,
                 Width = rectangle.Width,
                 Height = rectangle.Height,
-                Top = rectangle.Y + Math.Min(0, rectangle.Height),
-                Right = rectangle.X + Math.Max(0, rectangle.Width),
-                Bottom = rectangle.Y + Math.Max(0, rectangle.Height),
-                Left = rectangle.X + Math.Min(0, rectangle.Width),
             };
 
             return dRect;

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WebBrowser.DOM.Nodes.Elements.HTMLElements
 {
-    [HTML(NodeName = "body", PureContainer = true)]
+    [HTML(NodeName = "body", PureContainer = true, Margin = "8")]
     public class HTMLBodyElement : HTMLElement
     {
         public HTMLBodyElement(Node? parentNode, string nodeName) : base(parentNode, nodeName) { }

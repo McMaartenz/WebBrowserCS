@@ -67,6 +67,44 @@ namespace WebBrowser.DOM
         public Node? FirstChild => ChildNodes.FirstOrDefault();
         public Node? LastChild => ChildNodes.LastOrDefault();
 
+        public Node? PreviousSibling
+        {
+            get
+            {
+                if (ParentNode is null)
+                {
+                    return null;
+                }
+
+                int i = ParentNode.ChildNodes.IndexOf(this);
+                if (i == 0)
+                {
+                    return null;
+                }
+
+                return ParentNode.ChildNodes[i - 1];
+            }
+        }
+
+        public Node? NextSibling
+        {
+            get
+            {
+                if (ParentNode is null)
+                {
+                    return null;
+                }
+
+                int i = ParentNode.ChildNodes.IndexOf(this);
+                if (i >= ParentNode.ChildNodes.Count)
+                {
+                    return null;
+                }
+
+                return ParentNode.ChildNodes[i + 1];
+            }
+        }
+
         public Node(Node? parentNode, string nodeName)
         {
             ParentNode = parentNode;
