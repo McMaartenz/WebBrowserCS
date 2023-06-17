@@ -149,12 +149,6 @@ namespace WebBrowser
 
                 switch (token)
                 {
-                    case Token.Unknown:
-                    {
-                        ParseError($"Unknown token '{c}'");
-                        break;
-                    }
-
                     case Token.Whitespace:
                     {
                         if (BuildNode())
@@ -173,6 +167,12 @@ namespace WebBrowser
                         }
 
                         break;
+                    }
+
+                    case Token.Unknown:
+                    {
+                        ParseError($"Unknown token '{c}'");
+                        goto case Token.Character;
                     }
 
                     case Token.Character:
