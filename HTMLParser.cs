@@ -74,7 +74,7 @@ namespace WebBrowser
                 _inCDATA = false;
             }
 
-            if (nodeName == "--" || nodeName == "]]")
+            if (nodeName == "--" || nodeName == "]]" || nodeName.ToLower() == "!doctype")
             {
                 _closingNode = true;
             }
@@ -107,7 +107,7 @@ namespace WebBrowser
                 return true;
             }
 
-            _currentNode = Document.CreateElement(_currentNode, nodeName);
+            _currentNode = Document.CreateElement(_currentNode, nodeName.ToLower());
             return true;
         }
 

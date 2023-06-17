@@ -27,7 +27,7 @@
                             <ColumnDefinition Width="*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
                         <Button Grid.Column="0" x:Name="clearConsoleButton" Content="CLEAR" Click="clearConsoleButton_Click"/>
-                        <TextBox Grid.Column="1" x:Name="filterTextBox" TextChanged="filterTextBox_TextChanged"/>
+                        <TextBox Grid.Column="1" x:Name="filterTextBox" TextChanged="filterTextBox_TextChanged" VerticalContentAlignment="Center" MaxLines="1" Padding="4,0,0,0"/>
                     </Grid>
                     <ScrollViewer Grid.Row="1">
                         <ItemsControl x:Name="ConsoleHistory" ItemsSource="{Binding TextBlocksView}">
@@ -36,7 +36,7 @@
                             </ItemsControl.DataContext>
                         </ItemsControl>
                     </ScrollViewer>
-                    <TextBox Grid.Row="2" TextWrapping="Wrap" />
+                    <TextBox Grid.Row="2" TextWrapping="Wrap" VerticalContentAlignment="Center" Padding="8,0,0,0" FontSize="20" MaxLines="1" />
                 </Grid>
             </TabItem>
             <TabItem Header="Network">

@@ -7,8 +7,18 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" KeyDown="Window_KeyDown" Closing="Window_Closing">
     <Grid>
-        <Canvas x:Name="RenderField">
-            
-        </Canvas>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="36"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="64"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="RefreshButton" Grid.Column="0" Click="RefreshButton_Click">Refresh</Button>
+            <TextBox x:Name="UriBar" Grid.Column="1" VerticalContentAlignment="Center" FontSize="14" MaxLines="1" Padding="8,0,0,0" KeyDown="UriBar_KeyDown"/>
+        </Grid>
+        <Canvas Grid.Row="1" x:Name="RenderField" />
     </Grid>
 </Window>

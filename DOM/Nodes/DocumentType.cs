@@ -9,6 +9,6 @@ namespace WebBrowser.DOM.Nodes
     [HTML(NodeName = "!DOCTYPE")]
     public class DocumentType : Node
     {
-        public DocumentType(Node? parentNode, string nodeName = "!DOCTYPE") : base(parentNode, nodeName) { }
+        public DocumentType(Node? parentNode, string nodeName) : base(parentNode, nodeName) { }
     }
 }

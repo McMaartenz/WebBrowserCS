@@ -38,7 +38,7 @@ namespace WebBrowser.DOM
                         continue;
                     }
 
-                    Conversions.Add(htmlAttr.NodeName, type);
+                    Conversions.Add(htmlAttr.NodeName.ToLower(), type);
                 }
             }
         }

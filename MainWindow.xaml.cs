@@ -45,6 +45,7 @@ namespace WebBrowser
 
             InitializeComponent();
             _browserWindow.Location = url;
+            UriBar.Text = url;
         }
 
         public MainWindow() : this("http://localhost:7357/webbrowser/index.html") { }
@@ -118,6 +119,19 @@ namespace WebBrowser
                 Inspector inspector = InspectorPtr.Object;
                 inspector.ShouldClose = true;
                 inspector.Close();
+            }
+        }
+
+        private void RefreshButton_Click(object sender, RoutedEventArgs e)
+        {
+            _browserWindow.Location = _browserWindow.Location;
+        }
+
+        private void UriBar_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                _browserWindow.Location = UriBar.Text;
             }
         }
     }
