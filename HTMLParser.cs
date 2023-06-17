@@ -27,6 +27,9 @@ namespace WebBrowser
         private bool _textNode = false;
         private bool _inCDATA = false;
 
+        private bool _previousIsTextNode = false;
+        Node? _previousTextNode = null;
+
         private string HTML;
         private int pos;
 
@@ -75,11 +78,22 @@ namespace WebBrowser
             {
                 _textNode = false;
 
+                if (_previousIsTextNode)
+                {
+                    _previousTextNode!.NodeValue += ' ' + nodeName;
+                    return true;
+                }
+
+                _previousIsTextNode = true;
+
                 Text textNode = (Text)Document.CreateElement(_currentNode, "#text");
                 textNode.NodeValue = nodeName; // Not name but value
+                _previousTextNode = textNode;
 
                 return true;
             }
+
+            _previousIsTextNode = false;
 
             if (nodeName == "--" || nodeName == "]]")
             {
