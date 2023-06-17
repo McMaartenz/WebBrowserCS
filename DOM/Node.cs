@@ -164,12 +164,22 @@ namespace WebBrowser.DOM
             {
                 var renderables = ChildNodes
                     .Select(child => child.AsRendered())
-                    .Where(element => element is not null);
+                    .Where(child => child is not null);
 
                 foreach (UIElement? renderable in renderables)
                 {
                     canvas.Children.Add(renderable!);
                 }
+            }
+
+            if (this is Element DOMElement)
+            {
+                DOMRect rect = DOMElement.GetBoundingClientRect();
+                element.RenderSize = new(rect.Width, rect.Height);
+
+                // rect left/top not updating. probably calculation issue
+                Canvas.SetLeft(element, rect.Left);
+                Canvas.SetTop(element, rect.Top);
             }
 
             console.Log($"Rendered component {me} {NodeName}");

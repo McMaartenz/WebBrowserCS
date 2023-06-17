@@ -4,13 +4,13 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using WebBrowser.DOM.Nodes;
 
 namespace WebBrowser.DOM
 {
     public class Window
     {
-
         private readonly Pointer<Inspector> _inspectorPtr;
         private readonly Pointer<IRenderer> _renderPtr;
         public Document Document { get; set; }
@@ -21,6 +21,13 @@ namespace WebBrowser.DOM
         {
             _renderPtr = renderPtr;
             _inspectorPtr = inspectorPtr;
+
+            Screen = new()
+            {
+                Height = SystemParameters.FullPrimaryScreenHeight,
+                Width = SystemParameters.FullPrimaryScreenWidth
+            };
+
             Document = new(this);
         }
 
@@ -36,8 +43,13 @@ namespace WebBrowser.DOM
             }
         }
 
-        public int Width { get; set; }
-        public int Height { get; set; }
+        public Screen Screen { get; set; }
+
+        public double OuterWidth => Renderer.OuterWidth();
+        public double OuterHeight => Renderer.OuterHeight();
+
+        public double InnerWidth => Renderer.InnerWidth();
+        public double InnerHeight => Renderer.InnerHeight();
 
         private async Task Navigate()
         {

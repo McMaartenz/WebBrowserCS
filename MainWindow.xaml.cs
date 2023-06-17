@@ -59,6 +59,12 @@ namespace WebBrowser
             }
         }
 
+        public double OuterWidth() => Width;
+        public double OuterHeight() => Height;
+
+        public double InnerWidth() => RenderField.ActualWidth;
+        public double InnerHeight() => RenderField.ActualHeight;
+
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             switch (e.Key)
