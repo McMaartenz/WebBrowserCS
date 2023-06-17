@@ -42,7 +42,7 @@ namespace WebBrowser
         public RequestType Type { get; set; }
         public HttpResponseMessage? Response { get; private set; }
 
-        public string Url { get; private set; }
+        public Uri Uri { get; private set; }
     
         public event EventHandler<RequestStatus>? StatusChanged;
         public event EventHandler<HttpResponseMessage>? Resolved;
@@ -50,7 +50,7 @@ namespace WebBrowser
         public Request(RequestType type, string url)
         {
             Type = type;
-            Url = url;
+            Uri = new(url);
             Status = RequestStatus.Blank;
         }
 
@@ -60,7 +60,7 @@ namespace WebBrowser
 
             Response = Type switch
             {
-                RequestType.GET => await client.GetAsync(Url),
+                RequestType.GET => await client.GetAsync(Uri),
                 _ => throw new NotImplementedException()
             };
             
@@ -72,7 +72,7 @@ namespace WebBrowser
 
         public override string ToString()
         {
-            return $"{Type} {Url}: {Status}\n{Response}";
+            return $"{((int?)Response?.StatusCode) ?? 0 :000} {Type} {Uri.Host} {Uri.PathAndQuery} ({Status})";
         }
     }
 }
