@@ -18,12 +18,14 @@ using Window = System.Windows.Window;
 
 namespace WebBrowser
 {
-    enum ConsoleWarningLevel
+    public enum ConsoleWarningLevel
     {
         Log,
         Warn,
         Error
     }
+
+    public record ConsoleEntry(ConsoleWarningLevel Level, string Text);
 
     /// <summary>
     /// Interaction logic for Inspector.xaml
@@ -34,19 +36,21 @@ namespace WebBrowser
 
         private readonly DOMWindow _browserWindow;
 
+        private readonly List<ConsoleEntry> _consoleEntries = new();
+
         public Inspector(DOMWindow browserWindow)
         {
             _browserWindow = browserWindow;
             InitializeComponent();
         }
 
-        private void Message(ConsoleWarningLevel level, object obj)
+        private void ConsoleMessage(ConsoleWarningLevel level, object contents)
         {
             ConsoleHistory.Dispatcher.BeginInvoke(() =>
             {
                 TextBlock tb = new()
                 {
-                    Text = $"{level}: {obj}",
+                    Text = contents.ToString(),
                     Foreground = level switch
                     {
                         ConsoleWarningLevel.Log => Brushes.SteelBlue,
@@ -55,13 +59,15 @@ namespace WebBrowser
                         _ => Brushes.Black
                     }
                 };
-                ConsoleHistory.Children.Add(tb);
-            });
+
+                ConsoleContext.TextBlocks.Add(tb, level);
+                ConsoleContext.UpdateView();
+            }, DispatcherPriority.Render);
         }
 
-        public void Log(object contents) => Message(ConsoleWarningLevel.Log, contents);
-        public void Warn(object contents) => Message(ConsoleWarningLevel.Warn, contents);
-        public void Error(object contents) => Message(ConsoleWarningLevel.Error, contents);
+        public void Log(object contents) => ConsoleMessage(ConsoleWarningLevel.Log, contents);
+        public void Warn(object contents) => ConsoleMessage(ConsoleWarningLevel.Warn, contents);
+        public void Error(object contents) => ConsoleMessage(ConsoleWarningLevel.Error, contents);
 
         public void ObserveRequest(Request request)
         {
@@ -96,6 +102,29 @@ namespace WebBrowser
         {
             e.Cancel = !ShouldClose;
             Hide();
+        }
+
+        private void clearConsoleButton_Click(object sender, RoutedEventArgs e)
+        {
+            ConsoleContext.TextBlocks.Clear();
+            ConsoleContext.UpdateView();
+        }
+
+        private void filterTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (sender is not TextBox box)
+            {
+                return;
+            }
+
+            string? text = box.Text;
+            if (box.Text == string.Empty)
+            {
+                text = null;
+            }
+
+            ConsoleContext.filterText = text;
+            ConsoleContext.UpdateView();
         }
     }
 }

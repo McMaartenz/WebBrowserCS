@@ -99,14 +99,15 @@ namespace WebBrowser
 
         private string GetSurrounding()
         {
-            return HTML[
+            return "node " + _currentNode.NodeName + " at '.." +
+                HTML[
                 Math.Max(0, pos - 5)..
-                Math.Min(HTML.Length, pos + 5)];
+                Math.Min(HTML.Length, pos + 5)] + "..'";
         }
 
         private void ParseError(string message)
         {
-            Console.Error($"[HTML Parser]: {message} at {pos} of ... {GetSurrounding()} ...");
+            Console.Error($"[HTML Parser]: {message} at {pos} in {GetSurrounding()}");
         }
 
         public void Parse()

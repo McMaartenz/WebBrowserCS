@@ -16,13 +16,26 @@
             <TabItem Header="Console">
                 <Grid Background="#FFE5E5E5">
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="24"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
                         <RowDefinition Height="48"></RowDefinition>
                     </Grid.RowDefinitions>
-                    <ScrollViewer Grid.Row="0" >
-                        <StackPanel x:Name="ConsoleHistory" />
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="48"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" x:Name="clearConsoleButton" Content="CLEAR" Click="clearConsoleButton_Click"/>
+                        <TextBox Grid.Column="1" x:Name="filterTextBox" TextChanged="filterTextBox_TextChanged"/>
+                    </Grid>
+                    <ScrollViewer Grid.Row="1">
+                        <ItemsControl x:Name="ConsoleHistory" ItemsSource="{Binding TextBlocksView}">
+                            <ItemsControl.DataContext>
+                                <local:ConsoleCtx x:Name="ConsoleContext"/>
+                            </ItemsControl.DataContext>
+                        </ItemsControl>
                     </ScrollViewer>
-                    <TextBox Grid.Row="1" TextWrapping="Wrap" />
+                    <TextBox Grid.Row="2" TextWrapping="Wrap" />
                 </Grid>
             </TabItem>
             <TabItem Header="Network">
