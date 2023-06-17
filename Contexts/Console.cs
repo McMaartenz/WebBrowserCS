@@ -7,9 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
-namespace WebBrowser
+namespace WebBrowser.Contexts
 {
-    public class ConsoleCtx : INotifyPropertyChanged
+    public class Console : INotifyPropertyChanged
     {
         public Dictionary<TextBlock, ConsoleWarningLevel> TextBlocks { get; set; } = new();
         public List<TextBlock> TextBlocksView { get; set; } = new();

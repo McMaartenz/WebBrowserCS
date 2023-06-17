@@ -25,8 +25,6 @@ namespace WebBrowser
         Error
     }
 
-    public record ConsoleEntry(ConsoleWarningLevel Level, string Text);
-
     /// <summary>
     /// Interaction logic for Inspector.xaml
     /// </summary>
@@ -35,8 +33,6 @@ namespace WebBrowser
         public bool ShouldClose { get; set; }
 
         private readonly DOMWindow _browserWindow;
-
-        private readonly List<ConsoleEntry> _consoleEntries = new();
 
         public Inspector(DOMWindow browserWindow)
         {
@@ -75,7 +71,8 @@ namespace WebBrowser
             NetworkHistory.Dispatcher.Invoke(() =>
             {
                 tb = new() { Text = request.ToString() };
-                NetworkHistory.Children.Add(tb);
+                NetworkContext.TextBlocks.Add(request, tb);
+                NetworkContext.UpdateView();
             });
 
             request.StatusChanged += (sender, e) =>
@@ -85,6 +82,7 @@ namespace WebBrowser
                     if (tb is not null)
                     {
                         tb.Text = request.ToString();
+                        NetworkContext.UpdateView();
                     }
                 });
             };

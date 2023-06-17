@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WebBrowser"
+        xmlns:ctx="clr-namespace:WebBrowser.Contexts"
         mc:Ignorable="d"
         Title="Inspector" Height="450" Width="800" Closing="Window_Closing">
     <Grid>
@@ -31,7 +32,7 @@
                     <ScrollViewer Grid.Row="1">
                         <ItemsControl x:Name="ConsoleHistory" ItemsSource="{Binding TextBlocksView}">
                             <ItemsControl.DataContext>
-                                <local:ConsoleCtx x:Name="ConsoleContext"/>
+                                <ctx:Console x:Name="ConsoleContext"/>
                             </ItemsControl.DataContext>
                         </ItemsControl>
                     </ScrollViewer>
@@ -41,7 +42,11 @@
             <TabItem Header="Network">
                 <Grid Background="#FFE5E5E5">
                     <ScrollViewer>
-                        <StackPanel x:Name="NetworkHistory" />
+                        <ItemsControl x:Name="NetworkHistory" ItemsSource="{Binding TextBlocksView}">
+                            <ItemsControl.DataContext>
+                                <ctx:Network x:Name="NetworkContext"/>
+                            </ItemsControl.DataContext>
+                        </ItemsControl>
                     </ScrollViewer>
                 </Grid>
             </TabItem>
