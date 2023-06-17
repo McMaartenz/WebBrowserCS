@@ -72,7 +72,9 @@ namespace WebBrowser
 
         public override string ToString()
         {
-            return $"{((int?)Response?.StatusCode) ?? 0 :000} {Type} {Uri.Host} {Uri.PathAndQuery} ({Status})";
+            string responseCode = ((int?)Response?.StatusCode)?.ToString("000") ?? "   ";
+
+            return $"{responseCode} {Type} {Uri.Host} {Uri.PathAndQuery} ({Status})";
         }
     }
 }
