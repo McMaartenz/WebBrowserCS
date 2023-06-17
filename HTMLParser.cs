@@ -74,7 +74,12 @@ namespace WebBrowser
                 _inCDATA = false;
             }
 
-            if (_textNode)
+            if (nodeName == "--" || nodeName == "]]")
+            {
+                _closingNode = true;
+            }
+
+            if (_textNode && !_closingNode)
             {
                 _textNode = false;
 
@@ -94,11 +99,6 @@ namespace WebBrowser
             }
 
             _previousIsTextNode = false;
-
-            if (nodeName == "--" || nodeName == "]]")
-            {
-                _closingNode = true;
-            }
 
             if (_closingNode)
             {

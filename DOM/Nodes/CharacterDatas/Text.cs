@@ -11,7 +11,7 @@ namespace WebBrowser.DOM.Nodes.CharacterDatas
     [HTML(NodeName = "#text", Renderable = typeof(TextBlock))]
     public class Text : CharacterData
     {
-        public Text(Node? parentNode, string nodeName = "#text") : base(parentNode, nodeName) { }
+        public Text(Node? parentNode, string nodeName) : base(parentNode, nodeName) { }
 
         public override string Stringify(int indent = 0)
         {

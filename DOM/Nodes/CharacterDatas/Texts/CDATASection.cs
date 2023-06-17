@@ -9,6 +9,6 @@ namespace WebBrowser.DOM.Nodes.CharacterDatas.Texts
     [HTML(NodeName = "![CDATA[")]
     public class CDATASection : Text
     {
-        public CDATASection(Node? parentNode, string nodeName = "![CDATA[") : base(parentNode, nodeName) { }
+        public CDATASection(Node? parentNode, string nodeName) : base(parentNode, nodeName) { }
     }
 }
