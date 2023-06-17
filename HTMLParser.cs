@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -17,7 +18,8 @@ namespace WebBrowser
     {
         public Document Document { get; init; }
         private Node _currentNode;
-        private StringBuilder _sb = new();
+        private readonly StringBuilder _sb = new();
+        private IConsole Console => Document.DefaultView.Console;
 
         /* Status */
         private bool _buildingNode = false;
@@ -25,12 +27,17 @@ namespace WebBrowser
         private bool _textNode = false;
         private bool _inCDATA = false;
 
+        private string HTML;
+        private int pos;
+
         public HTMLParser(Document document, string HTML)
         {
             Document = document;
             _currentNode = document;
 
-            Parse(HTML);
+            this.HTML = HTML;
+            pos = 0;
+            Parse();
         }
 
         public enum Token
@@ -90,13 +97,24 @@ namespace WebBrowser
             return true;
         }
 
-        public void Parse(string HTML)
+        private string GetSurrounding()
+        {
+            return HTML[
+                Math.Max(0, pos - 5)..
+                Math.Min(HTML.Length, pos + 5)];
+        }
+
+        private void ParseError(string message)
+        {
+            Console.Error($"[HTML Parser]: {message} at {pos} of ... {GetSurrounding()} ...");
+        }
+
+        public void Parse()
         {
             const string charsWhitespace = " \t\r\n";
             const string charsAlphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!?[]-";
             const string charsASCII = charsAlphabet + charsWhitespace + "()@#$%^&*()_+={}\\|'\";:,./0123456789";
 
-            int pos = 0;
             char c;
 
             while (pos < HTML.Length)
@@ -118,7 +136,7 @@ namespace WebBrowser
                 {
                     case Token.Unknown:
                     {
-                        MessageBox.Show($"Unknown token: {c}", "Invalid HTML", MessageBoxButton.OK, MessageBoxImage.Error);
+                        ParseError($"Unknown token '{c}'");
                         break;
                     }
 
@@ -178,7 +196,8 @@ namespace WebBrowser
 
                     default:
                     {
-                        throw new NotImplementedException();
+                        ParseError($"Unknown token '{c}'");
+                        break;
                     }
                 }
 

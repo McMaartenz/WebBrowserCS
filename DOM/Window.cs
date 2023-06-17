@@ -13,6 +13,7 @@ namespace WebBrowser.DOM
 
         private readonly Pointer<Inspector> _inspectorPtr;
         public Document Document { get; set; }
+        public IConsole Console => _inspectorPtr.Object!;
 
         public Window(Pointer<Inspector> inspectorPtr)
         {

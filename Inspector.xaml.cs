@@ -28,7 +28,7 @@ namespace WebBrowser
     /// <summary>
     /// Interaction logic for Inspector.xaml
     /// </summary>
-    public partial class Inspector : Window
+    public partial class Inspector : Window, IConsole
     {
         public bool ShouldClose { get; set; }
 
@@ -44,14 +44,24 @@ namespace WebBrowser
         {
             ConsoleHistory.Dispatcher.BeginInvoke(() =>
             {
-                TextBlock tb = new() { Text = $"{level}: {obj}"};
+                TextBlock tb = new()
+                {
+                    Text = $"{level}: {obj}",
+                    Foreground = level switch
+                    {
+                        ConsoleWarningLevel.Log => Brushes.SteelBlue,
+                        ConsoleWarningLevel.Warn => Brushes.Yellow,
+                        ConsoleWarningLevel.Error => Brushes.Crimson,
+                        _ => Brushes.Black
+                    }
+                };
                 ConsoleHistory.Children.Add(tb);
             });
         }
 
-        public void Log(object obj) => Message(ConsoleWarningLevel.Log, obj);
-        public void Warn(object obj) => Message(ConsoleWarningLevel.Warn, obj);
-        public void Error(object obj) => Message(ConsoleWarningLevel.Error, obj);
+        public void Log(object contents) => Message(ConsoleWarningLevel.Log, contents);
+        public void Warn(object contents) => Message(ConsoleWarningLevel.Warn, contents);
+        public void Error(object contents) => Message(ConsoleWarningLevel.Error, contents);
 
         public void ObserveRequest(Request request)
         {

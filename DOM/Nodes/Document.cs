@@ -11,7 +11,8 @@ namespace WebBrowser.DOM.Nodes
     [HTML(NodeName = "#document")]
     public class Document : Node
     {
-        private Window _parentWindow;
+        private readonly Window _parentWindow;
+        public Window DefaultView => _parentWindow;
 
         public Document(Window parentWindow) : base(null, "#document")
         {
