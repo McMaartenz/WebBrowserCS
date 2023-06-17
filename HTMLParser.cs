@@ -51,6 +51,7 @@ namespace WebBrowser
                 return false;
             }
 
+            _buildingNode = false;
             string nodeName = _sb.ToString();
             _sb.Clear();
 
@@ -86,8 +87,6 @@ namespace WebBrowser
             }
 
             _currentNode = Document.CreateElement(_currentNode, nodeName);
-
-            _buildingNode = false;
             return true;
         }
 

@@ -111,7 +111,7 @@ namespace WebBrowser.DOM
         public virtual string Stringifier(int indent = 0)
         {
             string tabs = new(' ', indent);
-            string[] childStrings = ChildNodes.Select(node => node.Stringifier(indent + 1)).ToArray();
+            string[] childStrings = ChildNodes.Select(node => node.Stringifier(indent + 2)).ToArray();
 
             string innerData = string.Join('\n', childStrings);
             if (innerData.Length > 0)
