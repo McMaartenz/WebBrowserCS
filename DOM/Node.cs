@@ -23,7 +23,7 @@ namespace WebBrowser.DOM
     }
 
     [HTML]
-    public class Node : EventTarget
+    public class Node : EventTarget, IStringifier
     {
         public string NodeName { get; init; }
         public string NodeValue { get; set; } = "";
@@ -105,13 +105,23 @@ namespace WebBrowser.DOM
 
         public override string ToString()
         {
-            return Stringifier();
+            return Stringify();
         }
 
-        public virtual string Stringifier(int indent = 0)
+        public virtual string Stringify(int indent = 0)
         {
-            string tabs = new(' ', indent);
-            string[] childStrings = ChildNodes.Select(node => node.Stringifier(indent + 2)).ToArray();
+            string tabs = IStringifier.GetTabs(indent);
+            if (NodeName.StartsWith('#'))
+            {
+                return $"{tabs}{NodeName}\n{GetChilds(indent)}";
+            }
+
+            return $"{tabs}<{NodeName}>\n{GetChilds(indent + 2)}{tabs}</{NodeName}>";
+        }
+
+        public string GetChilds(int indent = 0)
+        {
+            string[] childStrings = ChildNodes.Select(node => node.Stringify(indent)).ToArray();
 
             string innerData = string.Join('\n', childStrings);
             if (innerData.Length > 0)
@@ -119,7 +129,7 @@ namespace WebBrowser.DOM
                 innerData += '\n';
             }
 
-            return $"{tabs}<{NodeName}>\n{innerData}{tabs}</{NodeName}>";
+            return innerData;
         }
     }
 }

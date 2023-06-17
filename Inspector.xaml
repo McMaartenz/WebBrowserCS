@@ -8,6 +8,11 @@
         Title="Inspector" Height="450" Width="800" Closing="Window_Closing">
     <Grid>
         <TabControl>
+            <TabItem Header="DOM">
+                <Grid Background="#FFE5E5E5">
+                    <TextBlock x:Name="currentDocument"></TextBlock>
+                </Grid>
+            </TabItem>
             <TabItem Header="Console">
                 <Grid Background="#FFE5E5E5">
                     <Grid.RowDefinitions>

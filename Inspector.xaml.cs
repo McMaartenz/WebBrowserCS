@@ -75,7 +75,10 @@ namespace WebBrowser
 
             request.Resolved += (sender, e) =>
             {
-                Log(_browserWindow.Document.Stringifier());
+                currentDocument.Dispatcher.Invoke(() =>
+                {
+                    currentDocument.Text = _browserWindow.Document.ToString();
+                });
             };
         }
 
