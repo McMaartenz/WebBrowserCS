@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace WebBrowser.DOM.Nodes.CharacterDatas
@@ -16,6 +17,17 @@ namespace WebBrowser.DOM.Nodes.CharacterDatas
         {
             string tabs = IStringifier.GetTabs(indent);
             return $"{tabs}{NodeValue}";
+        }
+
+        public override UIElement? AsRendered()
+        {
+            if (base.AsRendered() is not TextBlock element)
+            {
+                return null;
+            }
+
+            element.Text = NodeValue;
+            return element;
         }
     }
 }
