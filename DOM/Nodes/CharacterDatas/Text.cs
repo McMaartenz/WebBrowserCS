@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace WebBrowser.DOM.Nodes.CharacterDatas
 {
-    [HTML(NodeName = "#text")]
+    [HTML(NodeName = "#text", Renderable = typeof(TextBlock))]
     public class Text : CharacterData
     {
         public Text(Node? parentNode, string nodeName = "#text") : base(parentNode, nodeName) { }

@@ -7,6 +7,8 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" KeyDown="Window_KeyDown" Closing="Window_Closing">
     <Grid>
-
+        <Canvas x:Name="RenderField">
+            
+        </Canvas>
     </Grid>
 </Window>

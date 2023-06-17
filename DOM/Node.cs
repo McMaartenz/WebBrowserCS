@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
 using WebBrowser.DOM.Nodes;
 using WebBrowser.DOM.Nodes.CharacterDatas;
 using WebBrowser.DOM.Nodes.CharacterDatas.Texts;
@@ -130,6 +134,46 @@ namespace WebBrowser.DOM
             }
 
             return innerData;
+        }
+
+        public virtual UIElement? AsRendered()
+        {
+            Type me = GetType();
+
+            IConsole console = this is Document document ? document.DefaultView.Console : OwnerDocument!.DefaultView.Console;
+
+            if (me.GetCustomAttribute(typeof(HTMLAttribute)) is not HTMLAttribute attr)
+            {
+                console.Warn($"Component {me} {NodeName} not rendered: no HTMLAttribute");
+                return null;
+            }
+
+            if (!attr.CanRender)
+            {
+                console.Warn($"Component {me} {NodeName} not rendered: cannot render");
+                return null;
+            }
+
+            if (attr.Renderable!.GetConstructor(Array.Empty<Type>())?.Invoke(null) is not UIElement element)
+            {
+                console.Warn($"Component {me} {NodeName} not rendered: no suitable constructor");
+                return null;
+            }
+
+            if (element is Canvas canvas)
+            {
+                var renderables = ChildNodes
+                    .Select(child => child.AsRendered())
+                    .Where(element => element is not null);
+
+                foreach (UIElement? renderable in renderables)
+                {
+                    canvas.Children.Add(renderable!);
+                }
+            }
+
+            console.Log($"Rendered component {me} {NodeName}");
+            return element;
         }
     }
 }

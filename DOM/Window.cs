@@ -12,11 +12,14 @@ namespace WebBrowser.DOM
     {
 
         private readonly Pointer<Inspector> _inspectorPtr;
+        private readonly Pointer<IRenderer> _renderPtr;
         public Document Document { get; set; }
         public IConsole Console => _inspectorPtr.Object!;
+        public IRenderer Renderer => _renderPtr.Object!;
 
-        public Window(Pointer<Inspector> inspectorPtr)
+        public Window(Pointer<IRenderer> renderPtr, Pointer<Inspector> inspectorPtr)
         {
+            _renderPtr = renderPtr;
             _inspectorPtr = inspectorPtr;
             Document = new(this);
         }

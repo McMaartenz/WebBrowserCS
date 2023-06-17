@@ -21,10 +21,11 @@ namespace WebBrowser
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IRenderer
     {
         public readonly static InstanceManager InstanceManager;
         public Pointer<Inspector> InspectorPtr { get; private set; } = new();
+        public Pointer<IRenderer> RendererPtr { get; init; } = new();
 
         private readonly DOMWindow _browserWindow;
 
@@ -37,7 +38,9 @@ namespace WebBrowser
         {
             InstanceManager.RegisterInstance(this);
 
-            _browserWindow = new(InspectorPtr);
+            RendererPtr.Object = this;
+
+            _browserWindow = new(RendererPtr, InspectorPtr);
             InspectorPtr.Object = new(_browserWindow);
 
             InitializeComponent();
@@ -45,6 +48,16 @@ namespace WebBrowser
         }
 
         public MainWindow() : this("http://localhost:7357/webbrowser/index.html") { }
+
+        public void Render(UIElement? element)
+        {
+            RenderField.Children.Clear();
+
+            if (element is not null)
+            {
+                RenderField.Children.Add(element);
+            }
+        }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {

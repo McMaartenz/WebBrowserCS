@@ -8,7 +8,7 @@ using System.Windows;
 
 namespace WebBrowser.DOM.Nodes
 {
-    [HTML(NodeName = "#document")]
+    [HTML(NodeName = "#document", PureContainer = true)]
     public class Document : Node
     {
         private readonly Window _parentWindow;
@@ -41,6 +41,8 @@ namespace WebBrowser.DOM.Nodes
         public void LoadHTML(string HTML)
         {
             _ = new HTMLParser(this, HTML);
+            UIElement? element = AsRendered();
+            DefaultView.Renderer.Render(element);
         }
     }
 }

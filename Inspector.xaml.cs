@@ -50,7 +50,7 @@ namespace WebBrowser
                     Foreground = level switch
                     {
                         ConsoleWarningLevel.Log => Brushes.SteelBlue,
-                        ConsoleWarningLevel.Warn => Brushes.Yellow,
+                        ConsoleWarningLevel.Warn => Brushes.Orange,
                         ConsoleWarningLevel.Error => Brushes.Crimson,
                         _ => Brushes.Black
                     }
